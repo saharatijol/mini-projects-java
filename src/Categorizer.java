@@ -32,12 +32,9 @@ public class Categorizer {
     }
 
     public void categorize(Transaction transaction) {
-        String descriptionLower = transaction.getDescription().toLowerCase();
-        String[] words = descriptionLower.split(" ");
-        for(String word : words) {
-            if(keywordCategoryMap.containsKey(word)) {
-                transaction.setCategory(keywordCategoryMap.get(word));
-            }
+        String category = findCategory(transaction.getDescription());
+        if(!category.equalsIgnoreCase("Uncategorized")) {
+            transaction.setCategory(category);
         }
     }
 
@@ -49,5 +46,17 @@ public class Categorizer {
             }
         }
         return keywordToCategory;
+    }
+
+    public String findCategory(String category) {
+        String description = category.toLowerCase();
+        String[] words = description.split(" ");
+        String setCategory = "Uncategorized";
+        for(String word : words) {
+            if(keywordCategoryMap.containsKey(word)) {
+                setCategory = keywordCategoryMap.get(word);
+            }
+        }
+        return setCategory;
     }
 }
