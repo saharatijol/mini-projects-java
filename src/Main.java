@@ -41,13 +41,11 @@ public class Main {
         }
 
 
-
-
         Categorizer categorizer = new Categorizer();
-        System.out.println("\n\nUsing the Categorizer Class");
         for(Transaction transaction : transactionsList) {
             categorizer.categorize(transaction);
         }
+
 
         System.out.println("\nTransactions WITH Category: ");
         for(Transaction transaction : transactionsList) {

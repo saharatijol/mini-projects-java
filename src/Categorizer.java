@@ -6,6 +6,7 @@ import java.util.Map;
 public class Categorizer {
 
     private HashMap<String, ArrayList<String>> categoryKeywords = new HashMap<>();
+    private HashMap<String, String> keywordCategoryMap = new HashMap<>();
 
     //constructor
     public Categorizer() {
@@ -26,16 +27,27 @@ public class Categorizer {
         this.categoryKeywords.put("Coffee", coffee);
         this.categoryKeywords.put("Shopping", shopping);
         this.categoryKeywords.put("Entertainment", entertainment);
+
+        this.keywordCategoryMap = reverseMap();
     }
 
     public void categorize(Transaction transaction) {
-        String descriptLower = transaction.getDescription().toLowerCase();
-        for(Map.Entry<String, ArrayList<String>> entry : categoryKeywords.entrySet()) {
-            for(String keyword : entry.getValue()) {
-                if(descriptLower.contains(keyword)) {
-                    transaction.setCategory(entry.getKey());
-                }
+        String descriptionLower = transaction.getDescription().toLowerCase();
+        String[] words = descriptionLower.split(" ");
+        for(String word : words) {
+            if(keywordCategoryMap.containsKey(word)) {
+                transaction.setCategory(keywordCategoryMap.get(word));
             }
         }
+    }
+
+    public HashMap<String, String> reverseMap() {
+        HashMap<String, String> keywordToCategory = new HashMap<>();
+        for(Map.Entry<String, ArrayList<String>> entry : categoryKeywords.entrySet()) {
+            for(String keyword : entry.getValue()) {
+                keywordToCategory.put(keyword, entry.getKey());
+            }
+        }
+        return keywordToCategory;
     }
 }
