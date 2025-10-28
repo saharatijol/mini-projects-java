@@ -7,6 +7,7 @@ public class Transaction {
     private String description;
     private double amount;
     // TODO: turn amount to BigDecimal later, double type for now
+    private String category = "Uncategorized";
 
     public Transaction(String date, String description, double amount) {
         this.date = date;
@@ -38,4 +39,11 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
