@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Categorizer {
 
@@ -32,9 +29,9 @@ public class Categorizer {
     }
 
     public void categorize(Transaction transaction) {
-        String category = findCategory(transaction.getDescription());
-        if(!category.equalsIgnoreCase("Uncategorized")) {
-            transaction.setCategory(category);
+        Optional<String> category = findCategory(transaction.getDescription());
+        if(category.isPresent()) {
+            transaction.setCategory(category.get());
         }
     }
 
@@ -48,15 +45,14 @@ public class Categorizer {
         return keywordToCategory;
     }
 
-    public String findCategory(String category) {
+    private Optional<String> findCategory(String category) {
         String description = category.toLowerCase();
         String[] words = description.split(" ");
-        String setCategory = "Uncategorized";
         for(String word : words) {
             if(keywordCategoryMap.containsKey(word)) {
-                setCategory = keywordCategoryMap.get(word);
+                return Optional.of(keywordCategoryMap.get(word));
             }
         }
-        return setCategory;
+        return Optional.empty();
     }
 }
