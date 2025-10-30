@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +22,9 @@ public class Main {
             reader.readLine(); // skips header
             while((line = reader.readLine()) != null) {
                 String[] arr = line.split(",");
-                double amount = Double.parseDouble(arr[2]);
-                transactionsList.add(new Transaction(arr[0], arr[1], amount));
+                LocalDate parsedDateFormat = LocalDate.parse(arr[0]);
+                BigDecimal amount = new BigDecimal(arr[2]);
+                transactionsList.add(new Transaction(parsedDateFormat, arr[1], amount));
             }
 
         } catch (FileNotFoundException e) {
@@ -56,18 +59,18 @@ public class Main {
         }
 
 
-        HashMap<String, Double> expenses = new HashMap<>();
+        HashMap<String, BigDecimal> expenses = new HashMap<>();
         for(Transaction transaction : transactionsList) {
             String category = transaction.getCategory();
-            Double amount = transaction.getAmount();
-            Double total = expenses.getOrDefault(category, 0.0);
+            BigDecimal amount = transaction.getAmount();
+            BigDecimal total = expenses.getOrDefault(category, BigDecimal.ZERO);
 
-            total += amount;
+            total = total.add(amount);
             expenses.put(category, total);
         }
 
         System.out.println("\nTotal Spent: ");
-        for (Map.Entry<String, Double> entry : expenses.entrySet()) {
+        for (Map.Entry<String, BigDecimal> entry : expenses.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }

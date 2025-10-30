@@ -45,6 +45,7 @@ public class Categorizer {
         return keywordToCategory;
     }
 
+    // if match is found, return value early
     private Optional<String> findCategory(String category) {
         String description = category.toLowerCase();
         String[] words = description.split(" ");

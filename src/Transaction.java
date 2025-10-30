@@ -1,25 +1,26 @@
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Transaction {
 
-    private String date;
-    // TODO: Use LocalDate later once the String date is working
+    private LocalDate date;
     private String description;
-    private double amount;
+    private BigDecimal amount;
     // TODO: turn amount to BigDecimal later, double type for now
     private String category = "Uncategorized";
 
-    public Transaction(String date, String description, double amount) {
+    public Transaction(LocalDate date, String description, BigDecimal amount) {
         this.date = date;
         this.description = description;
         this. amount = amount;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -31,11 +32,11 @@ public class Transaction {
         this.description = description;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
