@@ -8,7 +8,6 @@ import java.util.Map;
 public class ReportGenerator {
 
     private ArrayList<Transaction> transactions;
-    private HashMap<String, BigDecimal> expenses = new HashMap<>();
 
     public ReportGenerator(ArrayList<Transaction> transactionList) {
         this.transactions = transactionList;
@@ -49,29 +48,25 @@ public class ReportGenerator {
     }
 
     public void printToConsole() {;
-
-        String headings = "Date           " + "Description             " + "Amount      " + "Category         ";
         String money = "";
         String date = "";
 
         System.out.println("\nTRANSACTION REPORT");
-        System.out.println("===================");
-        System.out.println(headings);
+        System.out.println("=============================================================================");
+        System.out.printf("%-12s %-35s %12s %15s%n", "Date", "Description", "Amount", "Category");
         for(Transaction transaction : transactions) {
             date = formatDate(transaction.getDate());
             money = formatMoney(transaction.getAmount());
-            System.out.println(date + "     " +
-                                transaction.getDescription() + "     " +
-                                money + "     " +
-                                transaction.getCategory());
+
+            System.out.printf("%-12s %-35s %12s %15s%n", date, transaction.getDescription(), money, transaction.getCategory());
         }
 
-        System.out.println("\nSPENDING BY CATEGORY");
-        System.out.println("=====================");
+        System.out.println("\n\nSPENDING BY CATEGORY");
+        System.out.println("======================");
 
         HashMap<String, BigDecimal> displayExpenses = getExpensesByCategory();
         for(Map.Entry<String, BigDecimal> entry : displayExpenses.entrySet()) {
-            System.out.println(entry.getKey() + ": " + formatMoney(entry.getValue()));
+            System.out.printf("%-12s %-35s%n", entry.getKey(), formatMoney(entry.getValue()));
         }
 
         String formattedGrandTotal = "";
@@ -82,6 +77,6 @@ public class ReportGenerator {
 
         formattedGrandTotal = formatMoney(grandTotal);
 
-        System.out.println("\nGRAND TOTAL: " + formattedGrandTotal);
+        System.out.println("\n\nGRAND TOTAL: " + formattedGrandTotal);
     }
 }
