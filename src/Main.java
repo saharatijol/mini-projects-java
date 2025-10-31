@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main {
 
@@ -22,9 +20,9 @@ public class Main {
             reader.readLine(); // skips header
             while((line = reader.readLine()) != null) {
                 String[] arr = line.split(",");
-                LocalDate parsedDateFormat = LocalDate.parse(arr[0]);
+                LocalDate date = LocalDate.parse(arr[0]);
                 BigDecimal amount = new BigDecimal(arr[2]);
-                transactionsList.add(new Transaction(parsedDateFormat, arr[1], amount));
+                transactionsList.add(new Transaction(date, arr[1], amount));
             }
 
         } catch (FileNotFoundException e) {
@@ -35,43 +33,12 @@ public class Main {
             e.printStackTrace();
         }
 
-
-        System.out.println("\nTransaction WITHOUT Categories");
-        for(Transaction transaction : transactionsList) {
-            System.out.println(transaction.getDate() + "     "
-                    + transaction.getDescription() + "     "
-                    + transaction.getAmount());
-        }
-
-
         Categorizer categorizer = new Categorizer();
         for(Transaction transaction : transactionsList) {
             categorizer.categorize(transaction);
         }
 
-
-        System.out.println("\nTransactions WITH Category: ");
-        for(Transaction transaction : transactionsList) {
-            System.out.println(transaction.getDate() + "     "
-                    + transaction.getDescription() + "     "
-                    + transaction.getAmount() + "     "
-                    + transaction.getCategory());
-        }
-
-
-        HashMap<String, BigDecimal> expenses = new HashMap<>();
-        for(Transaction transaction : transactionsList) {
-            String category = transaction.getCategory();
-            BigDecimal amount = transaction.getAmount();
-            BigDecimal total = expenses.getOrDefault(category, BigDecimal.ZERO);
-
-            total = total.add(amount);
-            expenses.put(category, total);
-        }
-
-        System.out.println("\nTotal Spent: ");
-        for (Map.Entry<String, BigDecimal> entry : expenses.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
+        ReportGenerator reportGenerator = new ReportGenerator(transactionsList);
+        reportGenerator.printToConsole();
     }
 }
